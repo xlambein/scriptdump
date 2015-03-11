@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# A POSIX variable
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+while getopts "h?a:etl" opt; do
+    case "$opt" in
+    h|\?)
+        echo "Usage: todo [OPTION...] [FILE...]"
+        echo
+        echo "  -l              list all instances of \"TODO\" in FILE... (default)"
+        echo "  -a [TITLE]      add a new todo to .todolist with title TITLE"
+        echo "  -t              display .todolist with default pager"
+        echo "  -e              edit .todolist with nano"
+        exit 0
+        ;;
+    a)  echo "TODO ("$(date +"%Y-%m-%d")"): "$OPTARG > .todolist
+        exit 0
+        ;;
+    e)  nano .todolist
+        exit 0
+        ;;
+    t)  $PAGER .todolist
+        exit 0
+        ;;
+    l)  ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+[ "$1" = "--" ] && shift
+
+grep "TODO" -irn --color=auto --exclude-dir="\.git" $@
+
+# End of file
