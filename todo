@@ -14,7 +14,7 @@ while getopts "h?a:etl" opt; do
         echo "  -e              edit .todolist with nano"
         exit 0
         ;;
-    a)  echo "TODO ("$(date +"%Y-%m-%d")"): "$OPTARG > .todolist
+    a)  echo "TODO ("$(date +"%Y-%m-%d")"): "$OPTARG >> .todolist
         exit 0
         ;;
     e)  nano .todolist
